@@ -278,10 +278,12 @@ func (d *ReadableDuration) UnmarshalJSON(raw []byte) (err error) {
 	var dur time.Duration
 	str := string(raw)
 	if len(str) >= 2 && str[0] == '"' && str[len(str)-1] == '"' {
-		// quoted string
-		dur, err = time.ParseDuration(str[1 : len(str)-1])
-		if err != nil {
-			return err
+		if str != "\"\"" {
+			// quoted string
+			dur, err = time.ParseDuration(str[1 : len(str)-1])
+			if err != nil {
+				return err
+			}
 		}
 	} else {
 		// no quotes, not a string
